@@ -67,8 +67,8 @@ export const shopConfig = {
   },
   site: {
     description:
-      "A Storefront Built on Vercel Shop. Agent-ready commerce, powered by Shopify, Next, and Eve.",
-    name: "Vercel Shop",
+      "A curated marketplace for exceptional pre-owned cars, with transparent pricing and a better way to buy.",
+    name: "Apex Motors",
     url: defaultUrl,
   },
 } satisfies ShopConfig;

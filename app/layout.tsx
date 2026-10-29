@@ -8,14 +8,10 @@ import { Suspense } from "react";
 import { ActionBar } from "@/components/action-bar";
 import { AgentButton } from "@/components/agent/agent-button";
 import { AnalyticsComponents } from "@/components/analytics";
-import { CartUI } from "@/components/cart/cart-ui";
-import { CartProviderWrapper } from "@/components/cart/context";
-import { CartStandardActionsScript } from "@/components/cart/standard-actions";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { SiteSchema } from "@/components/schema/site-schema";
 import { botIdProtectedRoutes } from "@/lib/botid";
-import { seedCartData } from "@/lib/cart/server";
 import { shopConfig } from "@/lib/config";
 
 export const ensureStatic = "prefetch";
@@ -35,13 +31,10 @@ const geistMono = Geist_Mono({
 });
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  // Un-awaited: the promise streams to the client provider; never block the shell on it.
-  const cartData = seedCartData();
   return (
     <html lang={shopConfig.localization.locale}>
       <head>
         {shopConfig.botid.isEnabled && <BotIdClient protect={botIdProtectedRoutes} />}
-        <CartStandardActionsScript />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
@@ -54,20 +47,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <SiteSchema />
 
-        <CartProviderWrapper cartData={cartData}>
-          <Nav />
-          <main id="main-content" className="flex flex-1 flex-col min-w-0">
-            {children}
-          </main>
-          <Footer />
-          <CartUI />
-          <Suspense>
-            <ActionBar>{shopConfig.agent.isEnabled && <AgentButton />}</ActionBar>
-          </Suspense>
-          <Suspense>
-            <AnalyticsComponents />
-          </Suspense>
-        </CartProviderWrapper>
+        <Nav />
+        <main id="main-content" className="flex flex-1 flex-col min-w-0">
+          {children}
+        </main>
+        <Footer />
+        <Suspense>
+          <ActionBar>{shopConfig.agent.isEnabled && <AgentButton />}</ActionBar>
+        </Suspense>
+        <Suspense>
+          <AnalyticsComponents />
+        </Suspense>
       </body>
     </html>
   );
@@ -75,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 export const generateMetadata = async (): Promise<Metadata> => {
   return {
-    description: `Shop premium products, curated collections, and latest offers from ${shopConfig.site.name}.`,
+    description: shopConfig.site.description,
     generator: shopConfig.site.name,
     metadataBase: new URL(shopConfig.site.url),
     openGraph: {
