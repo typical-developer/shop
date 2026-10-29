@@ -67,8 +67,8 @@ export const shopConfig = {
   },
   site: {
     description:
-      "A curated marketplace for exceptional pre-owned cars, with transparent pricing and a better way to buy.",
-    name: "Apex Motors",
+      "Spec Sheet is a considered marketplace for exceptional cars, with clear vehicle details and transparent pricing.",
+    name: "Spec Sheet",
     url: defaultUrl,
   },
 } satisfies ShopConfig;
